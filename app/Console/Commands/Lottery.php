@@ -26,8 +26,7 @@ class Lottery extends Command
      */
     public function handle()
     {
-        // 2015, 2016, 2017, 2018, 2019, 2020,
-        $years = [2021, 2022, 2023, 2024];
+        $years = [2015, 2016, 2017, 2018, 2019, 2020];
         foreach ($years as $year) {
             $content = file_get_contents('./data/' . $year . '.html');
             $crawler = new Crawler($content);
