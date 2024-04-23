@@ -11,7 +11,7 @@ class Spec extends Command
      *
      * @var string
      */
-    protected $signature = 'calc:spec';
+    protected $signature = 'calc:spec {mode}';
 
     /**
      * The console command description.
@@ -25,6 +25,8 @@ class Spec extends Command
      */
     public function handle()
     {
+        $mode = $this->argument('mode');
+
         $lotteries = \App\Models\Lottery::orderBy('date', 'asc')->get()->toArray();
 
         $stats = [];
@@ -64,7 +66,11 @@ class Spec extends Command
             foreach ($allSub as $subName => $subInfo) {
                 $rate = bcdiv($subInfo['success'], $subInfo['total'], 3) * 100;
 //                $allRate = bcadd($allRate, $rate, 3);
-                echo $subName.':'.$rate.'%'.PHP_EOL;
+                if ($mode == 1) { // 基础
+                    echo sprintf('%s %s%%', $subName, $rate) . PHP_EOL;
+                } else { // 进阶
+                    echo sprintf('%s %s/%s = %s%%', $subName, $subInfo['success'], $subInfo['total'], $rate) . PHP_EOL;
+                }
             }
             echo '------------'.PHP_EOL;
         }

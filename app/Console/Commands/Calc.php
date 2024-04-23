@@ -11,7 +11,7 @@ class Calc extends Command
      *
      * @var string
      */
-    protected $signature = 'calc:normal';
+    protected $signature = 'calc:normal {mode}';
 
     /**
      * The console command description.
@@ -25,6 +25,8 @@ class Calc extends Command
      */
     public function handle()
     {
+        $mode = $this->argument('mode');
+
         $lotteries = \App\Models\Lottery::orderBy('date', 'asc')->get()->toArray();
 
         $animalsStats = [
@@ -656,7 +658,11 @@ class Calc extends Command
                     $rate = bcdiv($subInfo['success'], $subInfo['total'], 3) * 100;
                 }
 
-                echo $subName . ':' . $rate . '%' . PHP_EOL;
+                if ($mode == 1) { // 基础
+                    echo sprintf('%s %s%%', $subName, $rate) . PHP_EOL;
+                } else { // 进阶
+                    echo sprintf('%s %s/%s = %s%%', $subName, $subInfo['success'], $subInfo['total'], $rate) . PHP_EOL;
+                }
             }
         }
     }
