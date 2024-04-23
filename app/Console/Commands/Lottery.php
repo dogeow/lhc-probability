@@ -26,10 +26,10 @@ class Lottery extends Command
      */
     public function handle()
     {
-        $years = [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024];
+        // 2015, 2016, 2017, 2018, 2019, 2020,
+        $years = [2021, 2022, 2023, 2024];
         foreach ($years as $year) {
-            $content = file_get_contents('./data/'.$year.'.html');
-            print_r($content);exit;
+            $content = file_get_contents('./data/' . $year . '.html');
             $crawler = new Crawler($content);
 
             $n = 0;
@@ -55,11 +55,16 @@ class Lottery extends Command
                         $specCode = $matches[1][count($matches[1]) - 1];
                     }
 
+                    if (preg_match_all('/\d+(.*?)\//', $content, $matches)) {
+                        $spec = $matches[] = trim($matches[1][count($matches[1]) - 1]);
+                    }
+
                     \App\Models\Lottery::create([
                         'issue' => $issue,
                         'date' => $date,
                         'animals' => array_values(array_unique($animals)),
                         'spec_code' => $specCode,
+                        'spec' => $spec,
                     ]);
                 }
             });
