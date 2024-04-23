@@ -31,7 +31,7 @@ class SpecCode extends Command
         if ($year == 1) {
             $lotteries = \App\Models\Lottery::orderBy('date', 'asc')->get()->toArray();
         } else {
-            $lotteries = \App\Models\Lottery::whereYear('created_at', '>=', 2021)->orderBy('date', 'asc')->get()->toArray();
+            $lotteries = \App\Models\Lottery::whereYear('date', '>=', 2021)->orderBy('date', 'asc')->get()->toArray();
         }
 
         $stats = [];
