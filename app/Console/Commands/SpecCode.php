@@ -11,7 +11,7 @@ class SpecCode extends Command
      *
      * @var string
      */
-    protected $signature = 'calc:speccode {mode}';
+    protected $signature = 'calc:speccode {year} {mode}';
 
     /**
      * The console command description.
@@ -25,9 +25,14 @@ class SpecCode extends Command
      */
     public function handle()
     {
+        $year = $this->argument('year');
         $mode = $this->argument('mode');
 
-        $lotteries = \App\Models\Lottery::orderBy('date', 'asc')->get()->toArray();
+        if ($year == 1) {
+            $lotteries = \App\Models\Lottery::orderBy('date', 'asc')->get()->toArray();
+        } else {
+            $lotteries = \App\Models\Lottery::whereYear('created_at', '>=', 2021)->orderBy('date', 'asc')->get()->toArray();
+        }
 
         $stats = [];
 

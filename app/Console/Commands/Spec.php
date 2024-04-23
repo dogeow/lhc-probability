@@ -11,7 +11,7 @@ class Spec extends Command
      *
      * @var string
      */
-    protected $signature = 'calc:spec {mode}';
+    protected $signature = 'calc:spec {year} {mode}';
 
     /**
      * The console command description.
@@ -25,9 +25,14 @@ class Spec extends Command
      */
     public function handle()
     {
+        $year = $this->argument('year');
         $mode = $this->argument('mode');
 
-        $lotteries = \App\Models\Lottery::orderBy('date', 'asc')->get()->toArray();
+        if ($year == 1) {
+            $lotteries = \App\Models\Lottery::orderBy('date', 'asc')->get()->toArray();
+        } else {
+            $lotteries = \App\Models\Lottery::whereYear('created_at', '>=', 2021)->orderBy('date', 'asc')->get()->toArray();
+        }
 
         $stats = [];
 
