@@ -632,7 +632,7 @@ class Calc extends Command
 
         foreach ($lotteries as $i => $lottery) {
             foreach ($lottery['animals'] as $animalName) {
-                if (! isset($lotteries[$i + 1])) {
+                if (!isset($lotteries[$i + 1])) {
                     break;
                 }
 
@@ -648,10 +648,15 @@ class Calc extends Command
         }
 
         foreach ($animalsStats as $name => $allSub) {
-            echo $name.PHP_EOL;
+            echo $name . PHP_EOL;
             foreach ($allSub as $subName => $subInfo) {
-                $rate = bcdiv($subInfo['success'], $subInfo['total'], 3) * 100;
-                echo $subName.':'.$rate.'%'.PHP_EOL;
+                if ($subInfo['total'] == 0) {
+                    $rate = 0;
+                } else {
+                    $rate = bcdiv($subInfo['success'], $subInfo['total'], 3) * 100;
+                }
+
+                echo $subName . ':' . $rate . '%' . PHP_EOL;
             }
         }
     }
