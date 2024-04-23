@@ -11,7 +11,7 @@ class Calc extends Command
      *
      * @var string
      */
-    protected $signature = 'app:calc';
+    protected $signature = 'calc:normal';
 
     /**
      * The console command description.
@@ -25,8 +25,6 @@ class Calc extends Command
      */
     public function handle()
     {
-        $allAnimals = ['鼠', '牛', '虎', '兔', '龙', '蛇', '马', '羊', '猴', '鸡', '狗', '猪'];
-
         $lotteries = \App\Models\Lottery::orderBy('date', 'asc')->get()->toArray();
 
         $animalsStats = [
@@ -639,7 +637,7 @@ class Calc extends Command
                 }
 
                 $next = $lotteries[$i + 1];
-                foreach ($allAnimals as $subAnimalName) {
+                foreach (config('app.all_animals') as $subAnimalName) {
                     $animalsStats[$animalName][$subAnimalName]['total'] += 1;
 
                     if (in_array($subAnimalName, $next['animals'])) {

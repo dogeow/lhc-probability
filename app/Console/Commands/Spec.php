@@ -11,7 +11,7 @@ class Spec extends Command
      *
      * @var string
      */
-    protected $signature = 'app:spec';
+    protected $signature = 'calc:spec';
 
     /**
      * The console command description.
@@ -25,58 +25,6 @@ class Spec extends Command
      */
     public function handle()
     {
-        $allNumbers = [
-            '01',
-            '02',
-            '03',
-            '04',
-            '05',
-            '06',
-            '07',
-            '08',
-            '09',
-            '10',
-            '11',
-            '12',
-            '13',
-            '14',
-            '15',
-            '16',
-            '17',
-            '18',
-            '19',
-            '20',
-            '21',
-            '22',
-            '23',
-            '24',
-            '25',
-            '26',
-            '27',
-            '28',
-            '29',
-            '30',
-            '31',
-            '32',
-            '33',
-            '34',
-            '35',
-            '36',
-            '37',
-            '38',
-            '39',
-            '40',
-            '41',
-            '42',
-            '43',
-            '44',
-            '45',
-            '46',
-            '47',
-            '48',
-            '49',
-        ];
-
         $lotteries = \App\Models\Lottery::orderBy('date', 'asc')->get()->toArray();
 
         $stats = [];
@@ -87,37 +35,35 @@ class Spec extends Command
             }
 
             $next = $lotteries[$i + 1];
-            foreach ($allNumbers as $subNumber) {
-                if (! isset($stats[$lottery['spec_code']])) {
-                    $stats[$lottery['spec_code']] = [];
-                    if (! isset($stats[$lottery['spec_code']][$subNumber])) {
-                        $stats[$lottery['spec_code']][$subNumber] = ['total' => 1, 'success' => 0];;
+            foreach (config('app.all_animals') as $subNumber) {
+                if (! isset($stats[$lottery['spec']])) {
+                    $stats[$lottery['spec']] = [];
+                    if (! isset($stats[$lottery['spec']][$subNumber])) {
+                        $stats[$lottery['spec']][$subNumber] = ['total' => 1, 'success' => 0];;
                     } else {
-                        $stats[$lottery['spec_code']][$subNumber]['total'] += 1;
+                        $stats[$lottery['spec']][$subNumber]['total'] += 1;
                     }
                 } else {
-                    if (! isset($stats[$lottery['spec_code']][$subNumber])) {
-                        $stats[$lottery['spec_code']][$subNumber] = ['total' => 1, 'success' => 0];
+                    if (! isset($stats[$lottery['spec']][$subNumber])) {
+                        $stats[$lottery['spec']][$subNumber] = ['total' => 1, 'success' => 0];
                     } else {
-                        $stats[$lottery['spec_code']][$subNumber]['total'] += 1;
+                        $stats[$lottery['spec']][$subNumber]['total'] += 1;
                     }
                 }
 
-                if ($subNumber === $next['spec_code']) {
-                    $stats[$lottery['spec_code']][$subNumber]['success'] += 1;
+                if ($subNumber === $next['spec']) {
+                    $stats[$lottery['spec']][$subNumber]['success'] += 1;
                 }
             }
         }
 
-        ksort($stats);
-
         foreach ($stats as $name => $allSub) {
             echo $name.PHP_EOL;
 
-            $allRate = 0;
+//            $allRate = 0;
             foreach ($allSub as $subName => $subInfo) {
                 $rate = bcdiv($subInfo['success'], $subInfo['total'], 3) * 100;
-                $allRate = bcadd($allRate, $rate, 3);
+//                $allRate = bcadd($allRate, $rate, 3);
                 echo $subName.':'.$rate.'%'.PHP_EOL;
             }
             echo '------------'.PHP_EOL;
